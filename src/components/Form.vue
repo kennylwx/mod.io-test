@@ -1,10 +1,10 @@
 <template>
   <div class="form-bg">
-    <h1 class="form-title">
+    <h2 class="form-title">
       Login to your
       <a class="ft-link" href="https://mod.io/" target="_blank">mod.io</a>
       account
-    </h1>
+    </h2>
 
     <!-- First: Enter email and api key -->
     <form @submit.prevent="login" class="form-container">

@@ -1,23 +1,41 @@
 <template>
-  <!-- Second: Enter code from email -->
-  <div className="form-outer">
-    <div class="form-bg">
-      <form @submit.prevent="enterCode" class="form-container">
-        <div v-if="responseMsg && !responseStatus" class="input-validation">
-          {{ responseMsg }}
-        </div>
-        <div class="input-container">
-          <label class="form-label">Secret Code</label>
-          <input
-            v-model="codeInput"
-            name="usernameInput"
-            class="form-input"
-            type="email"
-          />
-        </div>
-        <button class="login-button">Enter code</button>
-      </form>
-    </div>
+  <div class="form-outer">
+    <form action="#" class="form-code">
+      <h4 class="fc-title">Enter security code</h4>
+      <div class="fc-input">
+        <input
+          type="tel"
+          maxlength="1"
+          pattern="[0-9A-Za-z]"
+          class="form-control"
+        />
+        <input
+          type="tel"
+          maxlength="1"
+          pattern="[0-9A-Za-z]"
+          class="form-control"
+        />
+        <input
+          type="tel"
+          maxlength="1"
+          pattern="[0-9A-Za-z]"
+          class="form-control"
+        />
+        <input
+          type="tel"
+          maxlength="1"
+          pattern="[0-9A-Za-z]"
+          class="form-control"
+        />
+        <input
+          type="tel"
+          maxlength="1"
+          pattern="[0-9A-Za-z]"
+          class="form-control"
+        />
+      </div>
+      <button type="submit" class="login-button">Verify account</button>
+    </form>
   </div>
 </template>
 
@@ -55,42 +73,57 @@ export default {
 @import "../styles/forms.css";
 
 .form-outer {
-  display: block; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  display: block;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.8);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.form-code {
+  padding: 28px;
+  border-radius: 2px;
+  background-color: rgb(17, 18, 22);
+  border: 1px solid rgb(46, 46, 46);
+  margin-top: -20vh;
 }
 
-.form-bg {
-  /* position: absolute; */
-  /* left: -100px;
-  width: 350px;
-  height: 250px;
-  background: blue;
-  -webkit-animation: slide 0.5s forwards;
-  -webkit-animation-delay: 2s;
-  animation: slide 0.5s forwards;
-  animation-delay: 0.5s; */
-
-  /* margin: 15% auto; 15% from the top and centered */
-  /* width: 80%; Could be more or less, depending on screen size */
+.fc-title {
+  color: rgb(224, 224, 224);
+  margin: 16px 0 24px;
+  font-size: 1.2em;
+  text-align: center;
+}
+.fc-input {
+  display: flex;
+  margin: 18px 0;
 }
 
-@-webkit-keyframes slide {
-  100% {
-    left: 0;
-  }
+.form-control {
+  display: block;
+  height: 50px;
+  width: 50px;
+  margin-right: 0.5rem;
+  text-align: center;
+  font-size: 1.25rem;
+  min-width: 0;
+  background-color: rgb(17, 18, 22);
+  border: 1px solid rgb(46, 46, 46);
+  color: rgb(226, 226, 226);
 }
 
-@keyframes slide {
-  100% {
-    left: 0;
-  }
+.form-control:last-child {
+  margin-right: 0;
+}
+
+.form-control:focus {
+  outline: 2px solid rgb(22, 131, 255);
 }
 </style>
