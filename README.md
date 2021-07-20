@@ -10,13 +10,13 @@ Having only less than 2 nights of work time, I was unable to finish up the proje
 
 ### Tasks that still needs to be completed.
 
-1. Finding out why [https://api.mod.io/v1/me](https://api.mod.io/v1/me) keeps giving 401 status error, despite providing the right session token in the Authorization header. I was only able to fetch the session token, but not the games from the user.
-2. Write UI test cases. Treating the server as a blackbox. The test cases, would ideally be
+1. Finding out why [https://api.mod.io/v1/me](https://api.mod.io/v1/me) keeps giving 401 status error, despite providing the right session token in the Authorization header. I was only able to fetch the session token, but not the games from the user. **Major**
+2. Write UI test cases. Treating the server as a blackbox. The test cases, would ideally be **Major**
    a. Stimulating inputing values, and checking to see if the popup works when success, and not when fails.
    b. Check upon putting in security code in popup, the home page is seen, the access token is stored.
    c. Write test cases to verify the game objects are being retrieved onMount.
    d. Validate diffent use cases during Login, and Verify.
-3. Fix Verifiation Security Code Interface. A lot of work can still be done.
+3. Fix Verifiation Security Code Interface. A lot of work can still be done. **Minor**
    a. Once you paste, the focus goes out of wack, and you can't `backspace` appropriately.
    b. After pasting, typing has some issues as well.
    c. Occasionally, pasting the code does not paste all the Characters. Some are missing.
