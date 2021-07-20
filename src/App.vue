@@ -1,7 +1,7 @@
 <template>
   <div class="header"><h1>Kenny's App &#9996;</h1></div>
   <Form />
-  <!-- <Popup /> -->
+  <Popup />
 </template>
 
 <script lang="ts">

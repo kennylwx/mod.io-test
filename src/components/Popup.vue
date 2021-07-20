@@ -1,8 +1,11 @@
 <template>
   <div class="form-outer">
-    <form action="#" class="form-code">
+    <form @submit.prevent="verify" class="form-code">
       <h4 class="fc-title">Enter security code</h4>
-      <div class="fc-input">
+      <div class="input-validation">
+        {{ responseMsg }}
+      </div>
+      <div class="fc-input" ref="codeInputContainer">
         <input
           type="tel"
           maxlength="1"
@@ -40,30 +43,66 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { loginReq } from "../requests";
 
 export default {
   setup() {
-    const codeInput = ref<string>("");
-    let responseMsg = ref<string>("");
-    let responseStatus = ref<boolean>(false);
+    const codeInputContainer = ref<HTMLElement | null>(null);
 
-    async function enterCode() {
-      console.log("Enter code: " + codeInput.value);
+    let responseMsg = ref<string>(
+      "A security code has been sent to your email (test@email.coom)."
+    );
 
-      if (!codeInput.value) {
-        responseMsg.value =
-          "Email or API key is not entered. Please try again.";
-        responseStatus.value = false;
+    onMounted(() => {
+      const inputElements = Array.from(codeInputContainer.value!.children);
+      console.log("Mounted");
+      console.log(inputElements);
+
+      inputElements.forEach((ele, index) => {
+        ele.addEventListener("keydown", ((e: KeyboardEvent) => {
+          if (
+            e.key === "Backspace" &&
+            (<HTMLInputElement>e.target!).value === ""
+          )
+            (inputElements[Math.max(0, index - 1)] as HTMLElement).focus();
+          console.log(e);
+        }) as EventListener);
+
+        ele.addEventListener("input", ((e: KeyboardEvent) => {
+          const [first, ...rest] = (<HTMLInputElement>e.target!).value;
+          (<HTMLInputElement>e.target!).value = first ?? "";
+          if (index !== inputElements.length - 1 && first !== undefined) {
+            (inputElements[index + 1] as HTMLElement).focus();
+            (inputElements[index + 1] as HTMLInputElement).value =
+              rest.join("");
+            inputElements[index + 1].dispatchEvent(new Event("input"));
+          }
+        }) as EventListener);
+      });
+    });
+
+    async function verify() {
+      if (codeInputContainer !== null) {
+        const codeInputChildren = Array.from(
+          codeInputContainer.value!.children
+        );
+
+        const codeArr: Array<string> = [];
+
+        for (let i = 0; i < codeInputChildren.length; i++) {
+          codeArr.push((codeInputChildren[i] as HTMLInputElement).value);
+        }
+
+        const securityCode = codeArr.join("");
+        console.log(securityCode);
       }
     }
 
     return {
-      codeInput,
-      enterCode,
+      codeInputContainer,
+      verify,
       responseMsg,
-      responseStatus,
     };
   },
 };
@@ -93,6 +132,14 @@ export default {
   background-color: rgb(17, 18, 22);
   border: 1px solid rgb(46, 46, 46);
   margin-top: -20vh;
+
+  max-width: 320px;
+}
+
+@media only screen and (max-width: 480px) {
+  .form-code {
+    max-width: 100%;
+  }
 }
 
 .fc-title {
@@ -101,6 +148,13 @@ export default {
   font-size: 1.2em;
   text-align: center;
 }
+
+.input-validation {
+  background-color: rgba(2, 105, 11, 0.13) !important;
+  border-left: 4px solid rgb(73, 214, 17) !important;
+  color: rgb(12, 250, 4) !important;
+}
+
 .fc-input {
   display: flex;
   margin: 18px 0;
@@ -110,7 +164,8 @@ export default {
   display: block;
   height: 50px;
   width: 50px;
-  margin-right: 0.5rem;
+  width: 100%;
+  margin-right: 8px;
   text-align: center;
   font-size: 1.25rem;
   min-width: 0;

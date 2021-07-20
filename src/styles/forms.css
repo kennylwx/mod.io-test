@@ -11,19 +11,21 @@
   flex-direction: column;
 
   margin-top: 15vh;
-  padding: 24px;
 }
 
-@media only screen and (max-width: 560px) {
+@media only screen and (max-width: 480px) {
   .form-bg {
     width: 100%;
+    max-width: 100%;
+    border: none;
   }
 }
 
 .form-title {
   font-size: 1.3em;
   border-radius: 2px;
-  margin: 20px 0 10px;
+  margin: 36px 0 8px;
+  padding: 0 24px;
   text-align: start;
   color: rgb(236, 236, 236);
 }
@@ -34,6 +36,7 @@
 
 .form-container {
   text-decoration: none;
+  padding: 0 24px 24px;
 }
 
 .input-container {
@@ -80,6 +83,8 @@
   background-color: rgba(105, 17, 2, 0.13);
   border-left: 4px solid rgb(214, 23, 17);
   color: rgb(250, 13, 4);
+
+  line-height: 18px;
 }
 
 .login-button {

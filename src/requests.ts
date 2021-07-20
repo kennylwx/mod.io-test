@@ -36,7 +36,7 @@ export async function loginReq(
     });
 }
 
-export async function enterCodeReq(
+export async function verifyReq(
   code: string,
   apiKey: string,
   responseMsg: Ref<string>,
