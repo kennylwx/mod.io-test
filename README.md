@@ -1,27 +1,64 @@
-# Vue 3 + Typescript + Vite
+# Task: Retrieve, display and test
 
-This template should help get you started developing with Vue 3 and Typescript in Vite.
+## Running the app
 
-## Recommended IDE Setup
+`yarn dev` To run in dev mode.
 
-[VSCode](https://code.visualstudio.com/) + [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur). Make sure to enable `vetur.experimental.templateInterpolationService` in settings!
+## Post Task Reflection
 
-### If Using `<script setup>`
+Having only less than 2 nights of work time, I was unable to finish up the project as intended.
 
-[`<script setup>`](https://github.com/vuejs/rfcs/pull/227) is a feature that is currently in RFC stage. To get proper IDE support for the syntax, use [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) instead of Vetur (and disable Vetur).
+### Tasks that still needs to be completed.
 
-## Type Support For `.vue` Imports in TS
+1. Finding out why [https://api.mod.io/v1/me](https://api.mod.io/v1/me) keeps giving 401 status error, despite providing the right session token in the Authorization header. I was only able to fetch the session token, but not the games from the user.
+2. Write UI test cases. Treating the server as a blackbox. The test cases, would ideally be
+   a. Stimulating inputing values, and checking to see if the popup works when success, and not when fails.
+   b. Check upon putting in security code in popup, the home page is seen, the access token is stored.
+   c. Write test cases to verify the game objects are being retrieved onMount.
+   d. Validate diffent use cases during Login, and Verify.
+3. Fix Verifiation Security Code Interface. A lot of work can still be done.
+   a. Once you paste, the focus goes out of wack, and you can't `backspace` appropriately.
+   b. After pasting, typing has some issues as well.
+   c. Occasionally, pasting the code does not paste all the Characters. Some are missing.
+   d. Pasting something else entirely (other symbols) causes it to hang.
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can use the following:
+### Things that I have learned
 
-### If Using Volar
+1. This is my first time using Compositional API, and it is hard to get your head around, especially when trying to bind data (2 way) between a child and parent, or when updating a parent state from a child, or vice versa. The syntax is uneccesarily hard to figure out, as the resources out there is muddied with different approaches. Not to mention, the added complexity, when both Vue3 and Vue2 approaches are acceptable. This just blurs the "right" approach even further. In comparison, React Hooks is way cleaner.
 
-Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
+2. vue-router 4 is compatible with Vue 3. Anything below 4, is for Vue 2. Took me a long time to figure that out. For some reason, `yarn add vue-router` comes with vue-router 3.5.
 
-### If Using Vetur
+3. I initially took on Typescript, as I thought it would help, but it proved to be the opposite (at least in the short run). It took out a lot of my time, as I had to figure out how the types of new APIs (Vue3), which I am unfamiliar with.
 
-1. Install and add `@vuedx/typescript-plugin-vue` to the [plugins section](https://www.typescriptlang.org/tsconfig#plugins) in `tsconfig.json`
-2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
-3. Open `src/main.ts` in VSCode
-4. Open the VSCode command palette
-5. Search and run "Select TypeScript version" -> "Use workspace version"
+4. I used Postman to test out the APIs listed on [mod.io docs](https://docs.mod.io/?javascript#get-authenticated-user) beforehand, and it was definitely a right move. It's a great tool.
+
+5. One of the highlights was building a verification security code interface. It was interesting, as I had only come across using it. The pasting the security code mechanism still has many issues with it, and I will be solving that first.
+
+## Task
+
+Create an Vitejs app that allows users to sign into modio using their email. \
+Once user is logged in, display games as a list of cards.
+
+### Card to display
+
+- Name of game.
+- Date added in human readable format.
+- Game logo image.
+- Game's subscriber total.
+- Game's download total.
+
+Write tests to confirm code works.
+
+Components must use Vue composition API.\
+Retrieval of games must use logged in user's oauth token.\
+Typescript optional.
+
+**Timeframe:** 48 hours
+
+### Resources
+
+modio API documentation: https://docs.mod.io/ \
+Vitejs: https://vitejs.dev/ \
+API key can be generated after registering @ [mod.io](https://mod.io/)
+
+The purpose of this code challenge is to demonstrate that the developer is able to retrieve data from an external source, format and display retrieved data and write tests to confirm their code works as intended.
