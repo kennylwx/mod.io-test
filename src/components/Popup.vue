@@ -1,10 +1,10 @@
 <template>
-  <div class="form-outer">
-    <form @submit.prevent="verify" class="form-code">
+  <div class="form-outer" id="popup">
+    <form @submit.prevent="verify(codeInputContainer)" class="form-code">
       <h4 class="fc-title">Enter security code</h4>
       <div
         class="input-validation"
-        :class="[isSuccess ? 'iv-success' : 'iv-failure']"
+        :class="[responseStatus ? 'iv-success' : 'iv-failure']"
         v-if="responseMsg"
       >
         {{ responseMsg }}
@@ -51,7 +51,9 @@
           style="text-transform: uppercase"
         />
       </div>
-      <button type="button" class="extra-button">Send code again</button>
+      <button type="button" class="extra-button" @click="login">
+        Send code again
+      </button>
       <button type="submit" class="login-button">Verify account</button>
     </form>
   </div>
@@ -59,19 +61,33 @@
 
 <script lang="ts">
 import { ref, onMounted } from "vue";
-import { verifyReq } from "../requests";
 
 export default {
-  setup() {
+  name: "Popup",
+  props: [
+    "popupStatus",
+    "closePopup",
+    "verify",
+    "responseStatus",
+    "responseMsg",
+    "login",
+  ],
+  emits: ["update:popupStatus"],
+  setup(props, { emit }) {
     const codeInputContainer = ref<HTMLElement | null>(null);
 
-    let responseMsg = ref<string>(
-      "A security code has been sent to your email (test@email.coom)."
-    );
-
-    let isSuccess = ref<boolean>(true);
-
     onMounted(() => {
+      //  Whole popup
+      const popupElement = document.getElementById("popup");
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == popupElement) {
+          props.closePopup();
+        }
+      };
+
+      // Security Code elements
       const inputElements = Array.from(codeInputContainer.value!.children);
 
       inputElements.forEach((ele, index) => {
@@ -82,7 +98,6 @@ export default {
             (<HTMLInputElement>e.target!).value === ""
           ) {
             (inputElements[Math.max(0, index - 1)] as HTMLElement).focus();
-            console.log(<HTMLInputElement>e.target);
           }
         }) as EventListener);
 
@@ -104,7 +119,6 @@ export default {
             "text"
           );
           const pasteStrArr = paste.substring(0, 5).toUpperCase().split("");
-          console.log(pasteStrArr);
 
           inputElements.forEach((elem, index) => {
             if (index >= pasteStrArr.length) {
@@ -113,43 +127,14 @@ export default {
 
             elem.setAttribute("value", pasteStrArr[index]);
             (inputElements[index] as HTMLElement).blur();
-            // console.log(pasteStrArr[index]);
-            // (<HTMLElement>elem).blur();
           });
           (inputElements[inputElements.length - 1] as HTMLElement).blur();
         }) as EventListener);
       });
     });
 
-    async function verify() {
-      if (codeInputContainer !== null) {
-        const codeInputChildren = Array.from(
-          codeInputContainer.value!.children
-        );
-
-        const codeArr: Array<string> = [];
-
-        for (let i = 0; i < codeInputChildren.length; i++) {
-          codeArr.push((codeInputChildren[i] as HTMLInputElement).value);
-        }
-
-        const securityCode = codeArr.join("").toUpperCase();
-        console.log(securityCode);
-
-        if (securityCode.length < 5 || securityCode === "") {
-          responseMsg.value = "Invalid security code. Please try again.";
-          isSuccess.value = false;
-        } else {
-          responseMsg.value = "";
-        }
-      }
-    }
-
     return {
       codeInputContainer,
-      verify,
-      responseMsg,
-      isSuccess,
     };
   },
 };

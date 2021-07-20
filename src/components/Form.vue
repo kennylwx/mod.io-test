@@ -44,15 +44,6 @@
 export default {
   name: "Form",
   props: ["emailInput", "apiInput", "responseMsg", "responseStatus", "login"],
-  // setup(props) {
-  //   // let emailInput = props.emailInput;
-  //   // const apiInput = props.apiInput;
-  //   // const responseMsg = props.responseMsg;
-  //   // const responseStatus = props.responseStatus;
-  //   // const login = props.login;
-
-  //   return {};
-  // },
 };
 </script>
 
