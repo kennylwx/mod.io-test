@@ -82,11 +82,7 @@ export async function verifyReq(
     });
 }
 
-export async function getGamesReq(
-  accessToken: string
-  // responseMsg: Ref<string>,
-  // responseStatus: Ref<boolean>
-) {
+export async function getGamesReq(accessToken: string) {
   const config = {
     baseURL: "https://api.test.mod.io/v1/",
     headers: {
@@ -100,11 +96,6 @@ export async function getGamesReq(
     .then((response) => {
       console.log(response);
       return response;
-
-      // if (response.status === 200) {
-      //   // responseMsg.value = response.data.message;
-      //   // responseStatus.value = true;
-      // }
     })
     .catch((err) => {
       console.warn(err);

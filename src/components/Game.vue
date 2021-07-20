@@ -42,7 +42,7 @@ export default {
   background-color: rgb(17, 18, 22);
   border: 1px solid rgb(46, 46, 46);
   border-radius: 2px;
-  padding: 8px;
+  padding: 12px;
 }
 
 .g-header {
@@ -59,13 +59,13 @@ export default {
   margin-left: 8px;
 }
 .game-name {
-  margin: 4px 0;
-  font-size: 1em;
+  margin: 0;
+  font-size: 0.92rem;
   color: rgb(221, 221, 221);
 }
 
 .game-date {
-  margin: 0;
+  margin: 4px 0;
   font-size: 0.76rem;
   font-weight: 500;
   color: rgb(204, 202, 202);
@@ -75,7 +75,7 @@ export default {
   margin: 0;
   height: 50px;
   width: 50px;
-  background-color: yellow;
+  background-color: rgb(235, 252, 8);
 }
 
 .game-stat {

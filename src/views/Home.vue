@@ -24,14 +24,6 @@
       gameSubscribers="23"
       gameDownloads="56"
     />
-
-    <Game
-      gameName="Test Game"
-      gameDate="12 Jun 2019"
-      gameLogo="../assets/logo.png"
-      gameSubscribers="23"
-      gameDownloads="56"
-    />
   </div>
 </template>
 <script>
@@ -50,6 +42,8 @@ export default {
     onMounted(async () => {
       const accessToken = getWithExpiry("access_token");
       console.log("Access Token: " + accessToken);
+
+      // API Call to retrieve Games is not working
       const response = await getGamesReq(accessToken);
       console.log("Response: " + response);
     });
@@ -64,9 +58,9 @@ export default {
   display: grid;
   width: 100%;
   margin: 24px;
-  grid-gap: 10px;
+  grid-gap: 18px;
 
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   max-width: 720px;
 }
 
