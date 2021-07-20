@@ -2,41 +2,56 @@
   <div class="form-outer">
     <form @submit.prevent="verify" class="form-code">
       <h4 class="fc-title">Enter security code</h4>
-      <div class="input-validation">
+      <div
+        class="input-validation"
+        :class="[isSuccess ? 'iv-success' : 'iv-failure']"
+        v-if="responseMsg"
+      >
         {{ responseMsg }}
       </div>
       <div class="fc-input" ref="codeInputContainer">
         <input
+          id="code-1"
           type="tel"
           maxlength="1"
           pattern="[0-9A-Za-z]"
           class="form-control"
+          style="text-transform: uppercase"
         />
         <input
+          id="code-2"
           type="tel"
           maxlength="1"
           pattern="[0-9A-Za-z]"
           class="form-control"
+          style="text-transform: uppercase"
         />
         <input
+          id="code-3"
           type="tel"
           maxlength="1"
           pattern="[0-9A-Za-z]"
           class="form-control"
+          style="text-transform: uppercase"
         />
         <input
+          id="code-4"
           type="tel"
           maxlength="1"
           pattern="[0-9A-Za-z]"
           class="form-control"
+          style="text-transform: uppercase"
         />
         <input
+          id="code-5"
           type="tel"
           maxlength="1"
           pattern="[0-9A-Za-z]"
           class="form-control"
+          style="text-transform: uppercase"
         />
       </div>
+      <button type="button" class="extra-button">Send code again</button>
       <button type="submit" class="login-button">Verify account</button>
     </form>
   </div>
@@ -44,7 +59,7 @@
 
 <script lang="ts">
 import { ref, onMounted } from "vue";
-import { loginReq } from "../requests";
+import { verifyReq } from "../requests";
 
 export default {
   setup() {
@@ -54,21 +69,24 @@ export default {
       "A security code has been sent to your email (test@email.coom)."
     );
 
+    let isSuccess = ref<boolean>(true);
+
     onMounted(() => {
       const inputElements = Array.from(codeInputContainer.value!.children);
-      console.log("Mounted");
-      console.log(inputElements);
 
       inputElements.forEach((ele, index) => {
+        // When backspace, focus on the previous input
         ele.addEventListener("keydown", ((e: KeyboardEvent) => {
           if (
             e.key === "Backspace" &&
             (<HTMLInputElement>e.target!).value === ""
-          )
+          ) {
             (inputElements[Math.max(0, index - 1)] as HTMLElement).focus();
-          console.log(e);
+            console.log(<HTMLInputElement>e.target);
+          }
         }) as EventListener);
 
+        // After typing a letter, focus to the next input
         ele.addEventListener("input", ((e: KeyboardEvent) => {
           const [first, ...rest] = (<HTMLInputElement>e.target!).value;
           (<HTMLInputElement>e.target!).value = first ?? "";
@@ -78,6 +96,27 @@ export default {
               rest.join("");
             inputElements[index + 1].dispatchEvent(new Event("input"));
           }
+        }) as EventListener);
+
+        // When paste, get the first 5 char and paste it
+        ele.addEventListener("paste", ((e: ClipboardEvent) => {
+          let paste = (e!.clipboardData || (<any>window).clipboardData).getData(
+            "text"
+          );
+          const pasteStrArr = paste.substring(0, 5).toUpperCase().split("");
+          console.log(pasteStrArr);
+
+          inputElements.forEach((elem, index) => {
+            if (index >= pasteStrArr.length) {
+              return;
+            }
+
+            elem.setAttribute("value", pasteStrArr[index]);
+            (inputElements[index] as HTMLElement).blur();
+            // console.log(pasteStrArr[index]);
+            // (<HTMLElement>elem).blur();
+          });
+          (inputElements[inputElements.length - 1] as HTMLElement).blur();
         }) as EventListener);
       });
     });
@@ -94,8 +133,15 @@ export default {
           codeArr.push((codeInputChildren[i] as HTMLInputElement).value);
         }
 
-        const securityCode = codeArr.join("");
+        const securityCode = codeArr.join("").toUpperCase();
         console.log(securityCode);
+
+        if (securityCode.length < 5 || securityCode === "") {
+          responseMsg.value = "Invalid security code. Please try again.";
+          isSuccess.value = false;
+        } else {
+          responseMsg.value = "";
+        }
       }
     }
 
@@ -103,6 +149,7 @@ export default {
       codeInputContainer,
       verify,
       responseMsg,
+      isSuccess,
     };
   },
 };
@@ -134,6 +181,9 @@ export default {
   margin-top: -20vh;
 
   max-width: 320px;
+
+  display: flex;
+  flex-direction: column;
 }
 
 @media only screen and (max-width: 480px) {
@@ -144,20 +194,14 @@ export default {
 
 .fc-title {
   color: rgb(224, 224, 224);
-  margin: 16px 0 24px;
+  margin: 16px 0 14px;
   font-size: 1.2em;
   text-align: center;
 }
 
-.input-validation {
-  background-color: rgba(2, 105, 11, 0.13) !important;
-  border-left: 4px solid rgb(73, 214, 17) !important;
-  color: rgb(12, 250, 4) !important;
-}
-
 .fc-input {
   display: flex;
-  margin: 18px 0;
+  margin: 12px 0;
 }
 
 .form-control {
@@ -170,7 +214,7 @@ export default {
   font-size: 1.25rem;
   min-width: 0;
   background-color: rgb(17, 18, 22);
-  border: 1px solid rgb(46, 46, 46);
+  border: 1px solid rgb(70, 66, 66);
   color: rgb(226, 226, 226);
 }
 

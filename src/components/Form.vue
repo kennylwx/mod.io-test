@@ -8,10 +8,17 @@
 
     <!-- First: Enter email and api key -->
     <form @submit.prevent="login" class="form-container">
+      <div
+        v-if="responseMsg && !responseStatus"
+        class="input-validation iv-failure"
+      >
+        {{ responseMsg }}
+      </div>
       <div class="input-container">
         <label class="form-label">Email</label>
         <input
           v-model="emailInput"
+          @input="(event) => $emit('update:emailInput', event.target.value)"
           name="usernameInput"
           class="form-input"
           type="email"
@@ -20,57 +27,32 @@
 
       <div class="input-container">
         <label class="form-label">API Key</label>
-        <input v-model="apiInput" name="apiInput" class="form-input" />
+        <input
+          v-model="apiInput"
+          @input="(event) => $emit('update:apiInput', event.target.value)"
+          name="apiInput"
+          class="form-input"
+        />
       </div>
-      <div v-if="responseMsg && !responseStatus" class="input-validation">
-        {{ responseMsg }}
-      </div>
+
       <button class="login-button">Login</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
-import { loginReq } from "../requests";
-
 export default {
-  setup() {
-    const emailInput = ref<string>("");
-    const apiInput = ref<string>("");
-    let responseMsg = ref<string>("");
-    let responseStatus = ref<boolean>(false);
+  name: "Form",
+  props: ["emailInput", "apiInput", "responseMsg", "responseStatus", "login"],
+  // setup(props) {
+  //   // let emailInput = props.emailInput;
+  //   // const apiInput = props.apiInput;
+  //   // const responseMsg = props.responseMsg;
+  //   // const responseStatus = props.responseStatus;
+  //   // const login = props.login;
 
-    async function login() {
-      console.log(
-        "Login function selected with: " +
-          emailInput.value +
-          " " +
-          apiInput.value
-      );
-
-      if (!emailInput.value || !apiInput.value) {
-        responseMsg.value =
-          "Email or API key is not entered. Please try again.";
-        responseStatus.value = false;
-      } else {
-        await loginReq(
-          emailInput.value,
-          apiInput.value,
-          responseMsg,
-          responseStatus
-        );
-      }
-    }
-
-    return {
-      login,
-      emailInput,
-      apiInput,
-      responseMsg,
-      responseStatus,
-    };
-  },
+  //   return {};
+  // },
 };
 </script>
 

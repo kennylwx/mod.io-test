@@ -1,21 +1,65 @@
 <template>
   <div class="header"><h1>Kenny's App &#9996;</h1></div>
-  <Form />
-  <Popup />
+  <Form
+    v-model:emailInput="emailInput"
+    v-model:apiInput="apiInput"
+    v-model:responseMsg="responseMsg"
+    v-model:responseStatus="responseStatus"
+    :login="login"
+  />
+
+  <!-- <Popup /> -->
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
 import Form from "./components/Form.vue";
 import Popup from "./components/Popup.vue";
+import { loginReq } from "./requests";
 
-export default defineComponent({
-  name: "App",
+import { ref } from "vue";
+
+export default {
   components: {
     Form,
     Popup,
   },
-});
+  setup() {
+    const emailInput = ref<string>("");
+    const apiInput = ref<string>("");
+    let responseMsg = ref<string>("");
+    let responseStatus = ref<boolean>(false);
+
+    async function login() {
+      console.log(
+        "Login function selected with: " +
+          emailInput.value +
+          " " +
+          apiInput.value
+      );
+
+      if (!emailInput.value || !apiInput.value) {
+        responseMsg.value =
+          "Email or API key is not entered. Please try again.";
+        responseStatus.value = false;
+      } else {
+        await loginReq(
+          emailInput.value,
+          apiInput.value,
+          responseMsg,
+          responseStatus
+        );
+      }
+    }
+
+    return {
+      emailInput,
+      apiInput,
+      responseMsg,
+      responseStatus,
+      login,
+    };
+  },
+};
 </script>
 
 <style>
