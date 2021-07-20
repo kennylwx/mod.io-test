@@ -8,7 +8,7 @@
 
 Having only less than 2 nights of work time, I was unable to finish up the project as intended.
 
-### Tasks that still needs to be completed.
+### Things that I couldn't complete in tiime
 
 1. Finding out why [https://api.mod.io/v1/me](https://api.mod.io/v1/me) keeps giving 401 status error, despite providing the right session token in the Authorization header. I was only able to fetch the session token, but not the games from the user. **Major**
 2. Write UI test cases. Treating the server as a blackbox. The test cases, would ideally be **Major**
@@ -30,9 +30,11 @@ Having only less than 2 nights of work time, I was unable to finish up the proje
 
 3. I initially took on Typescript, as I thought it would help, but it proved to be the opposite (at least in the short run). It took out a lot of my time, as I had to figure out how the types of new APIs (Vue3), which I am unfamiliar with.
 
-4. I used Postman to test out the APIs listed on [mod.io docs](https://docs.mod.io/?javascript#get-authenticated-user) beforehand, and it was definitely a right move. It's a great tool.
+### Things that I have liked
 
-5. One of the highlights was building a verification security code interface. It was interesting, as I had only come across using it. The pasting the security code mechanism still has many issues with it, and I will be solving that first.
+1. I used Postman to test out the APIs listed on [mod.io docs](https://docs.mod.io/?javascript#get-authenticated-user) beforehand, and it was definitely a right move. It's a great tool.
+
+2. One of the highlights was building a verification security code interface. It was interesting, as I had only come across using it. The pasting the security code mechanism still has many issues with it, and I will be solving that first.
 
 ## Task
 
