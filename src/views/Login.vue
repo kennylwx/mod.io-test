@@ -57,8 +57,8 @@ export default {
       } else {
         loginReq(emailInput.value, apiInput.value)
           .then((response) => {
-            console.log("Login Success: ");
-            console.log(response);
+            // console.log("Login Success: ");
+            // console.log(response);
 
             if (response.code === 200) {
               responseMsg.value = response.message;
@@ -97,11 +97,10 @@ export default {
           responseMsg.value = "Invalid security code. Please try again.";
           isVerifyLoading.value = false;
         } else {
-          // responseMsg.value = "";
           verifyReq(securityCode, apiInput.value)
             .then((response) => {
-              console.log("Verification Success: ");
-              console.log(response);
+              // console.log("Verification Success!");
+              // console.log(response);
               if (response.code === 200) {
                 responseMsg.value = response.message;
                 responseStatus.value = true;
@@ -127,7 +126,6 @@ export default {
     }
 
     function goToMain() {
-      console.log("Redirect to main page");
       router.push({ name: "Home" });
     }
 
