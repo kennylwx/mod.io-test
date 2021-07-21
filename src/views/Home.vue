@@ -1,31 +1,37 @@
 <template>
-  <div class="header">
-    <h1>Kenny's App &#9996; Home</h1>
-  </div>
+  <Header />
   <div class="games-container">
     <Game v-for="(game, index) in retrievedGames" :key="index" :game="game" />
+  </div>
+
+  <div v-if="displayEmptyStatus" class="notice">
+    Your game library is empty. &#128531; Go create them at
+    <a href="https://mod.io/" target="_blank">mod.io</a>
   </div>
 </template>
 <script lang="ts">
 import { onMounted, ref } from "vue";
 import { getGamesReq } from "../requests";
-import { getWithExpiry } from "../localStorage";
+import { getWithExpiry, ACCESS_TOKEN } from "../localStorage";
 import Game from "../components/Game.vue";
 import GameObject from "../interfaces/game";
+import Header from "../components/Header.vue";
+import { isObjectEmpty } from "../util/isObjectEmpty";
 
 export default {
   components: {
     Game,
+    Header,
   },
   setup() {
     const retrievedGames = ref<Array<GameObject>>([]);
+    const displayEmptyStatus = false;
 
     onMounted(async () => {
-      const accessToken = getWithExpiry("access_token");
+      const accessToken = getWithExpiry(ACCESS_TOKEN);
 
       // API Call to retrieve Games
       getGamesReq(accessToken).then((res) => {
-        console.log(res.data);
         res.data.map(({ name, date_added, logo, stats }: GameObject) => {
           retrievedGames.value.push({
             name: name,
@@ -34,17 +40,38 @@ export default {
             stats: stats,
           });
         });
+
+        if (isObjectEmpty(res.data)) {
+          displayEmptyStatus = true;
+        }
       });
     });
 
     return {
       retrievedGames,
+      displayEmptyStatus,
     };
   },
 };
 </script>
 
 <style>
+.notice {
+  background-color: rgb(20, 23, 27);
+  padding: 18px;
+  color: rgb(214, 214, 214);
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  max-width: 250px;
+  line-height: 20px;
+}
+
+.notice a {
+  text-decoration: none;
+  color: rgb(42, 141, 255);
+}
+
 .games-container {
   display: grid;
   width: 100%;
@@ -52,7 +79,7 @@ export default {
   grid-gap: 18px;
 
   grid-template-columns: repeat(2, 1fr);
-  max-width: 720px;
+  max-width: 560px;
 }
 
 #app {
@@ -70,21 +97,6 @@ export default {
   background: url("../assets/background.jpg");
 
   padding: 0 18px;
-}
-
-h1 {
-  margin: 0;
-  font-size: 1.4em;
-  color: rgb(228, 228, 228);
-}
-
-.header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 60px;
-  box-sizing: border-box;
 }
 
 body {

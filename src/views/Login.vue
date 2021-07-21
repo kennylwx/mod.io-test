@@ -41,9 +41,9 @@ export default {
 
     // Handle login at the start with email and API Key
     async function login() {
-      console.log(
-        "Login started with: " + emailInput.value + " " + apiInput.value
-      );
+      // console.log(
+      //   "Login started with: " + emailInput.value + " " + apiInput.value
+      // );
 
       if (!emailInput.value || !apiInput.value) {
         responseMsg.value =
@@ -73,12 +73,12 @@ export default {
 
         const securityCode = codeArr.join("").toUpperCase();
 
-        console.log(
-          "Verification started with Code: " +
-            securityCode +
-            " API: " +
-            apiInput.value
-        );
+        // console.log(
+        //   "Verification started with Code: " +
+        //     securityCode +
+        //     " API: " +
+        //     apiInput.value
+        // );
 
         if (securityCode.length < 5 || securityCode === "") {
           responseMsg.value = "Invalid security code. Please try again.";

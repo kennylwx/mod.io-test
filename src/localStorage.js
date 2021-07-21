@@ -1,5 +1,7 @@
 // https://www.sohamkamani.com/blog/javascript-localstorage-with-ttl-expiry/
 
+export const ACCESS_TOKEN = "access_token";
+
 export function setWithExpiry(key, value, ttl) {
   const now = new Date();
 
@@ -28,4 +30,8 @@ export function getWithExpiry(key) {
     return null;
   }
   return item.value;
+}
+
+export function remove(key) {
+  localStorage.removeItem(key);
 }

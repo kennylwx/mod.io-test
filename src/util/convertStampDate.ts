@@ -51,6 +51,6 @@ export function convertStampDate(unixtimestamp: number) {
     seconds.substr(-2);
 
   // final date
-  let convdataTime = day + " " + month + "" + year;
+  let convdataTime = day + " " + month + " " + year;
   return convdataTime;
 }

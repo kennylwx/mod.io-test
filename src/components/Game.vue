@@ -20,8 +20,9 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import { convertStampDate } from "../util/convertStampDate";
+import { isObjectEmpty } from "../util/isObjectEmpty";
 import logo from "../assets/logo.png";
 
 export default {
@@ -31,12 +32,13 @@ export default {
     const subCount = ref<number>(0);
     const downCount = ref<number>(0);
 
-    if (Object.keys(props.game.stats).length !== 0) {
+    // Check if empty
+
+    if (!isObjectEmpty(props.game.stats)) {
       subCount.value = props.game.stats.mods_subscribers_total;
       downCount.value = props.game.stats.mods_downloads_total;
     }
 
-    console.log(props);
     return {
       logo,
       convertStampDate,
@@ -52,6 +54,28 @@ export default {
   border: 1px solid rgb(46, 46, 46);
   border-radius: 2px;
   padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 480px) {
+  .g-header {
+    flex-direction: column;
+  }
+
+  .g-info {
+    margin: 0;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .game-logo {
+    margin: 0;
+    height: 75px;
+    width: 75px;
+    min-width: 75px;
+  }
 }
 
 .g-header {
@@ -83,12 +107,13 @@ export default {
 .game-logo {
   margin: 0;
   height: 50px;
-  width: 50px;
-  background-color: rgb(235, 252, 8);
+  width: 50px !important;
+  min-width: 50px;
+  object-fit: cover;
 }
 
 .game-stat {
-  margin: 4px 0;
+  margin: 4px 0 0;
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
