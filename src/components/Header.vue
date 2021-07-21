@@ -2,35 +2,57 @@
   <div class="header">
     <div class="h-left">
       <h1>Kenny's App &#9996; {{ isHome.value }}</h1>
-      <div :class="[isHome ? 'nav-link nl-active' : 'nav-link nl-inactive']">
+      <div
+        v-if="!isLogin"
+        :class="[isHome ? 'nav-link nl-active' : 'nav-link nl-inactive']"
+      >
         <router-link to="/" tag="button">My Games </router-link>
       </div>
-      <div :class="[!isHome ? 'nav-link nl-active' : 'nav-link nl-inactive']">
+      <div
+        v-if="!isLogin"
+        :class="[!isHome ? 'nav-link nl-active' : 'nav-link nl-inactive']"
+      >
         <router-link to="/browse" tag="button">Browse</router-link>
       </div>
     </div>
-    <button type="button" class="sign-out">Sign Out</button>
+    <button v-if="!isLogin" @click="signout" type="button" class="sign-out">
+      Sign Out
+    </button>
   </div>
 </template>
 <script lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { remove, ACCESS_TOKEN } from "../localStorage";
+import router from "../router";
 
 export default {
   name: "Header",
   setup() {
-    let isHome = true;
+    let isHome = false;
+    let isLogin = false;
     const router = useRouter();
 
     const currentRouteName: string = "" + router.currentRoute.value.name;
     if (currentRouteName === "Home") {
       isHome = true;
+    } else if (currentRouteName === "Login") {
+      isLogin = true;
     } else {
       isHome = false;
+      isLogin = false;
+    }
+
+    function signout() {
+      console.log("Sign out");
+      remove(ACCESS_TOKEN);
+      router.push({ name: "Login" });
     }
 
     return {
       isHome,
+      isLogin,
+      signout,
     };
   },
 };
@@ -62,12 +84,12 @@ h1 {
 
 .sign-out {
   background-color: transparent;
-  color: rgb(185, 185, 185);
+  color: rgb(80, 80, 80) !important;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 0 0 1px;
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 600;
   align-self: flex-end;
   border-bottom: 3px solid transparent;
@@ -75,6 +97,7 @@ h1 {
 
 .sign-out:hover {
   border-bottom: 3px solid rgb(255, 200, 61);
+  color: rgb(201, 201, 201) !important;
 }
 
 .nav-link {

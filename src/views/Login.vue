@@ -1,11 +1,12 @@
 <template>
-  <div class="header"><h1>Kenny's App &#9996; Login</h1></div>
+  <Header />
   <Form
     v-model:emailInput="emailInput"
     v-model:apiInput="apiInput"
     v-model:responseMsg="responseMsg"
     v-model:responseStatus="responseStatus"
     :login="login"
+    :isLoading="isLoginLoading"
   />
 
   <Popup
@@ -16,13 +17,16 @@
     :closePopup="closePopup"
     :verify="verify"
     :login="login"
+    :isLoading="isVerifyLoading"
   />
 </template>
 
 <script lang="ts">
 import Form from "../components/Form.vue";
+import Header from "../components/Header.vue";
 import Popup from "../components/Popup.vue";
 import { loginReq, verifyReq } from "../requests";
+import { setWithExpiry, TTL_MIN } from "../localStorage";
 import router from "../router";
 
 import { ref } from "vue";
@@ -31,6 +35,7 @@ export default {
   components: {
     Form,
     Popup,
+    Header,
   },
   setup() {
     const emailInput = ref<string>("");
@@ -38,30 +43,44 @@ export default {
     let responseMsg = ref<string>("");
     let responseStatus = ref<boolean>(false);
     let popupStatus = ref<boolean>(false);
+    const isLoginLoading = ref<boolean>(false);
+    const isVerifyLoading = ref<boolean>(false);
 
     // Handle login at the start with email and API Key
     async function login() {
-      // console.log(
-      //   "Login started with: " + emailInput.value + " " + apiInput.value
-      // );
-
+      isLoginLoading.value = true;
       if (!emailInput.value || !apiInput.value) {
         responseMsg.value =
           "Email or API key is not entered. Please try again.";
         responseStatus.value = false;
+        isLoginLoading.value = false;
       } else {
-        await loginReq(
-          emailInput.value,
-          apiInput.value,
-          responseMsg,
-          responseStatus,
-          openPopup
-        );
+        loginReq(emailInput.value, apiInput.value)
+          .then((response) => {
+            console.log("Login Success: ");
+            console.log(response);
+
+            if (response.code === 200) {
+              responseMsg.value = response.message;
+              responseStatus.value = true;
+              openPopup();
+            } else {
+              responseStatus.value = false;
+              responseMsg.value = "Invalid API key or email. Please try again.";
+            }
+            isLoginLoading.value = false;
+          })
+          .catch((err) => {
+            responseStatus.value = false;
+            responseMsg.value = "Invalid email or API key. Please try again.";
+            isLoginLoading.value = false;
+          });
       }
     }
 
     // Handle security code verification with api key and code
     async function verify(codeInputContainer: HTMLInputElement) {
+      isVerifyLoading.value = true;
       if (codeInputContainer !== null) {
         const codeInputChildren = Array.from(codeInputContainer!.children);
 
@@ -73,30 +92,43 @@ export default {
 
         const securityCode = codeArr.join("").toUpperCase();
 
-        // console.log(
-        //   "Verification started with Code: " +
-        //     securityCode +
-        //     " API: " +
-        //     apiInput.value
-        // );
-
         if (securityCode.length < 5 || securityCode === "") {
+          responseStatus.value = false;
           responseMsg.value = "Invalid security code. Please try again.";
+          isVerifyLoading.value = false;
         } else {
-          responseMsg.value = "";
-          verifyReq(
-            securityCode,
-            apiInput.value,
-            responseMsg,
-            responseStatus,
-            goToMain
-          );
+          // responseMsg.value = "";
+          verifyReq(securityCode, apiInput.value)
+            .then((response) => {
+              console.log("Verification Success: ");
+              console.log(response);
+              if (response.code === 200) {
+                responseMsg.value = response.message;
+                responseStatus.value = true;
+                setWithExpiry(
+                  "access_token",
+                  response.access_token,
+                  TTL_MIN * 60000
+                );
+              } else {
+                responseMsg.value = response.message;
+                responseStatus.value = false;
+              }
+              goToMain();
+              isVerifyLoading.value = false;
+            })
+            .catch((err) => {
+              responseStatus.value = false;
+              responseMsg.value = "Invalid security code. Please try again.";
+              isVerifyLoading.value = false;
+            });
         }
       }
     }
 
     function goToMain() {
-      router.push("/");
+      console.log("Redirect to main page");
+      router.push({ name: "Home" });
     }
 
     function openPopup() {
@@ -104,6 +136,7 @@ export default {
     }
 
     function closePopup() {
+      responseMsg.value = "";
       popupStatus.value = false;
     }
 
@@ -116,6 +149,8 @@ export default {
       login,
       verify,
       closePopup,
+      isLoginLoading,
+      isVerifyLoading,
     };
   },
 };

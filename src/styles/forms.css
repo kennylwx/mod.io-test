@@ -37,6 +37,9 @@
 .form-container {
   text-decoration: none;
   padding: 0 24px 24px;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .input-container {
@@ -130,4 +133,12 @@
 .extra-button:active {
   /* background-color: rgba(1, 103, 212, 0.11); */
   color: rgb(9, 56, 209);
+}
+
+.loading {
+  height: 36px;
+  width: 36px;
+  margin-left: auto;
+  margin-right: auto;
+  /* align; */
 }

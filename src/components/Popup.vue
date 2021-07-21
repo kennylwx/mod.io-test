@@ -54,13 +54,22 @@
       <button type="button" class="extra-button" @click="login">
         Send code again
       </button>
-      <button type="submit" class="login-button">Verify account</button>
+      <img
+        v-if="isLoading"
+        class="loading"
+        :src="LoadingIcon"
+        alt="loading-icon"
+      />
+      <button v-if="!isLoading" type="submit" class="login-button">
+        Verify account
+      </button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
 import { ref, onMounted } from "vue";
+import LoadingIcon from "../assets/Rolling.svg";
 
 export default {
   name: "Popup",
@@ -71,6 +80,7 @@ export default {
     "responseStatus",
     "responseMsg",
     "login",
+    "isLoading",
   ],
   emits: ["update:popupStatus"],
   setup(props, { emit }) {
@@ -135,6 +145,7 @@ export default {
 
     return {
       codeInputContainer,
+      LoadingIcon,
     };
   },
 };

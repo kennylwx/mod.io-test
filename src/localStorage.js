@@ -1,6 +1,7 @@
 // https://www.sohamkamani.com/blog/javascript-localstorage-with-ttl-expiry/
 
 export const ACCESS_TOKEN = "access_token";
+export const TTL_MIN = 60; // Minutes to store the Access Token
 
 export function setWithExpiry(key, value, ttl) {
   const now = new Date();

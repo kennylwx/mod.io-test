@@ -11,7 +11,7 @@
 </template>
 <script lang="ts">
 import { onMounted, ref } from "vue";
-import { getGamesReq } from "../requests";
+import { getMyGamesReq } from "../requests";
 import { getWithExpiry, ACCESS_TOKEN } from "../localStorage";
 import Game from "../components/Game.vue";
 import GameObject from "../interfaces/game";
@@ -31,7 +31,7 @@ export default {
       const accessToken = getWithExpiry(ACCESS_TOKEN);
 
       // API Call to retrieve Games
-      getGamesReq(accessToken).then((res) => {
+      getMyGamesReq(accessToken).then((res) => {
         res.data.map(({ name, date_added, logo, stats }: GameObject) => {
           retrievedGames.value.push({
             name: name,
@@ -97,6 +97,7 @@ export default {
   background: url("../assets/background.jpg");
 
   padding: 0 18px;
+  /* min-width: 420px; */
 }
 
 body {

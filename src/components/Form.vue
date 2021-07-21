@@ -34,16 +34,36 @@
           class="form-input"
         />
       </div>
+      <img
+        v-if="isLoading"
+        class="loading"
+        :src="LoadingIcon"
+        alt="loading-icon"
+      />
 
-      <button class="login-button">Login</button>
+      <button v-if="!isLoading" class="login-button">Login</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
+import LoadingIcon from "../assets/Rolling.svg";
+
 export default {
   name: "Form",
-  props: ["emailInput", "apiInput", "responseMsg", "responseStatus", "login"],
+  props: [
+    "emailInput",
+    "apiInput",
+    "responseMsg",
+    "responseStatus",
+    "login",
+    "isLoading",
+  ],
+  setup() {
+    return {
+      LoadingIcon,
+    };
+  },
 };
 </script>
 
