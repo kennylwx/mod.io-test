@@ -1,4 +1,5 @@
 export default interface GameObject {
+  id: number;
   name: string;
   date_added: number;
   logo: GameLogo;

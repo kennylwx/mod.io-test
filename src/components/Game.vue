@@ -20,23 +20,30 @@
   </div>
 </template>
 <script lang="ts">
-import { ref } from "vue";
+import { ref, defineComponent } from "vue";
 import { convertStampDate } from "../util/convertStampDate";
 import { isObjectEmpty } from "../util/isObjectEmpty";
 import logo from "../assets/logo.png";
 
-export default {
+export default defineComponent({
   name: "Game",
-  props: ["game", "key"],
+  props: {
+    game: {
+      type: Object,
+      required: true,
+    },
+    key: {
+      type: Number,
+    },
+  },
   setup(props) {
     const subCount = ref<number>(0);
     const downCount = ref<number>(0);
 
     // Check if empty
-
     if (!isObjectEmpty(props.game.stats)) {
-      subCount.value = props.game.stats.mods_subscribers_total;
-      downCount.value = props.game.stats.mods_downloads_total;
+      subCount.value = props.game!.stats.mods_subscribers_total;
+      downCount.value = props.game!.stats.mods_downloads_total;
     }
 
     return {
@@ -46,7 +53,7 @@ export default {
       downCount,
     };
   },
-};
+});
 </script>
 <style scoped>
 .game {

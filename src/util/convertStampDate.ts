@@ -1,4 +1,4 @@
-export function convertStampDate(unixtimestamp: number) {
+export function convertStampDate(unixtimestamp: number): string {
   // Months array
   let months_arr = [
     "January",

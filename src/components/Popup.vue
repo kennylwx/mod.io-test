@@ -51,7 +51,7 @@
           style="text-transform: uppercase"
         />
       </div>
-      <button type="button" class="extra-button" @click="login">
+      <button type="button" class="extra-button" @click="sendCodeAgain">
         Send code again
       </button>
       <img
@@ -68,22 +68,39 @@
 </template>
 
 <script lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineComponent, PropType } from "vue";
 import LoadingIcon from "../assets/Rolling.svg";
 
-export default {
+export default defineComponent({
   name: "Popup",
-  props: [
-    "popupStatus",
-    "closePopup",
-    "verify",
-    "responseStatus",
-    "responseMsg",
-    "login",
-    "isLoading",
-  ],
+  props: {
+    closePopup: {
+      type: Function as PropType<() => void>,
+      required: true,
+    },
+    verify: {
+      type: Function as PropType<(arg0: HTMLElement | null) => void>,
+      required: true,
+    },
+    responseStatus: {
+      type: Boolean,
+      required: true,
+    },
+    responseMsg: {
+      type: String,
+      required: true,
+    },
+    sendCodeAgain: {
+      type: Function as PropType<() => void>,
+      required: true,
+    },
+    isLoading: {
+      type: Boolean,
+      required: true,
+    },
+  },
   emits: ["update:popupStatus"],
-  setup(props, { emit }) {
+  setup(props) {
     const codeInputContainer = ref<HTMLElement | null>(null);
 
     onMounted(() => {
@@ -91,7 +108,7 @@ export default {
       const popupElement = document.getElementById("popup");
 
       // When the user clicks anywhere outside of the modal, close it
-      window.onclick = function (event) {
+      window.onclick = function (event: MouseEvent): void {
         if (event.target == popupElement) {
           props.closePopup();
         }
@@ -148,7 +165,7 @@ export default {
       LoadingIcon,
     };
   },
-};
+});
 </script>
 
 <style scoped>

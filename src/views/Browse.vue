@@ -27,8 +27,9 @@ export default {
 
       // API Call to retrieve Games
       getGamesReq(tempAPI).then((res) => {
-        res.data.map(({ name, date_added, logo, stats }: GameObject) => {
+        res.data.map(({ id, name, date_added, logo, stats }: GameObject) => {
           retrievedGames.value.push({
+            id: id,
             name: name,
             date_added: date_added,
             logo: logo,

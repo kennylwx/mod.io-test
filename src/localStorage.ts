@@ -1,9 +1,13 @@
 // https://www.sohamkamani.com/blog/javascript-localstorage-with-ttl-expiry/
 
 export const ACCESS_TOKEN = "access_token";
-export const TTL_MIN = 60; // Minutes to store the Access Token
+export const API_TOKEN = "api_token_2";
+export const EMAIL_TOKEN = "email_token";
 
-export function setWithExpiry(key, value, ttl) {
+const MIN = 60;
+export const TTL = MIN * 60000; // Minutes to store the Access Token
+
+export function setWithExpiry(key: string, value: string, ttl: number): void {
   const now = new Date();
 
   // `item` is an object which contains the original value
@@ -15,7 +19,7 @@ export function setWithExpiry(key, value, ttl) {
   localStorage.setItem(key, JSON.stringify(item));
 }
 
-export function getWithExpiry(key) {
+export function getWithExpiry(key: string): string | null {
   const itemStr = localStorage.getItem(key);
   // if the item doesn't exist, return null
   if (!itemStr) {
@@ -33,6 +37,6 @@ export function getWithExpiry(key) {
   return item.value;
 }
 
-export function remove(key) {
+export function remove(key: string): void {
   localStorage.removeItem(key);
 }

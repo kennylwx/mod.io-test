@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="h-left">
-      <h1>Kenny's App &#9996; {{ isHome.value }}</h1>
+      <h1>Kenny's App &#9996;</h1>
       <div
         v-if="!isLogin"
         :class="[isHome ? 'nav-link nl-active' : 'nav-link nl-inactive']"
@@ -21,19 +21,20 @@
   </div>
 </template>
 <script lang="ts">
-import { ref } from "vue";
+import { ref, defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import { remove, ACCESS_TOKEN } from "../localStorage";
+import { remove, ACCESS_TOKEN, EMAIL_TOKEN, API_TOKEN } from "../localStorage";
 import router from "../router";
 
-export default {
+export default defineComponent({
   name: "Header",
   setup() {
     let isHome = false;
     let isLogin = false;
     const router = useRouter();
 
-    const currentRouteName: string = "" + router.currentRoute.value.name;
+    const currentRouteName: string =
+      "" + (router.currentRoute.value.name as string);
     if (currentRouteName === "Home") {
       isHome = true;
     } else if (currentRouteName === "Login") {
@@ -46,6 +47,9 @@ export default {
     function signout() {
       console.log("Sign out");
       remove(ACCESS_TOKEN);
+      remove(API_TOKEN);
+      remove(EMAIL_TOKEN);
+
       router.push({ name: "Login" });
     }
 
@@ -55,7 +59,7 @@ export default {
       signout,
     };
   },
-};
+});
 </script>
 <style scoped>
 h1 {

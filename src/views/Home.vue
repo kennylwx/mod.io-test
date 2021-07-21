@@ -1,7 +1,7 @@
 <template>
   <Header />
   <div class="games-container">
-    <Game v-for="(game, index) in retrievedGames" :key="index" :game="game" />
+    <Game v-for="(game, index) in retrievedGames" :key="game.id" :game="game" />
   </div>
 
   <div v-if="displayEmptyStatus" class="notice">
@@ -25,26 +25,29 @@ export default {
   },
   setup() {
     const retrievedGames = ref<Array<GameObject>>([]);
-    const displayEmptyStatus = false;
+    let displayEmptyStatus = false;
 
     onMounted(async () => {
       const accessToken = getWithExpiry(ACCESS_TOKEN);
 
-      // API Call to retrieve Games
-      getMyGamesReq(accessToken).then((res) => {
-        res.data.map(({ name, date_added, logo, stats }: GameObject) => {
-          retrievedGames.value.push({
-            name: name,
-            date_added: date_added,
-            logo: logo,
-            stats: stats,
+      if (accessToken) {
+        // API Call to retrieve Games
+        getMyGamesReq(accessToken).then((res) => {
+          res.data.map(({ id, name, date_added, logo, stats }: GameObject) => {
+            retrievedGames.value.push({
+              id: id,
+              name: name,
+              date_added: date_added,
+              logo: logo,
+              stats: stats,
+            });
           });
-        });
 
-        if (isObjectEmpty(res.data)) {
-          displayEmptyStatus = true;
-        }
-      });
+          if (isObjectEmpty(res.data)) {
+            displayEmptyStatus = true;
+          }
+        });
+      }
     });
 
     return {

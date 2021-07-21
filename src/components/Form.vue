@@ -7,7 +7,7 @@
     </h2>
 
     <!-- First: Enter email and api key -->
-    <form @submit.prevent="login" class="form-container">
+    <form @submit.prevent="login(emailInput, apiInput)" class="form-container">
       <div
         v-if="responseMsg && !responseStatus"
         class="input-validation iv-failure"
@@ -17,8 +17,7 @@
       <div class="input-container">
         <label class="form-label">Email</label>
         <input
-          v-model="emailInput"
-          @input="(event) => $emit('update:emailInput', event.target.value)"
+          id="emailInput"
           name="usernameInput"
           class="form-input"
           type="email"
@@ -27,12 +26,7 @@
 
       <div class="input-container">
         <label class="form-label">API Key</label>
-        <input
-          v-model="apiInput"
-          @input="(event) => $emit('update:apiInput', event.target.value)"
-          name="apiInput"
-          class="form-input"
-        />
+        <input id="apiInput" name="apiInput" class="form-input" />
       </div>
       <img
         v-if="isLoading"
@@ -48,23 +42,48 @@
 
 <script lang="ts">
 import LoadingIcon from "../assets/Rolling.svg";
+import { defineComponent, PropType, onMounted, ref } from "vue";
 
-export default {
+export default defineComponent({
   name: "Form",
-  props: [
-    "emailInput",
-    "apiInput",
-    "responseMsg",
-    "responseStatus",
-    "login",
-    "isLoading",
-  ],
+  emits: ["update:emailInput", "update:apiInput"],
+  props: {
+    responseMsg: {
+      type: String,
+      required: true,
+    },
+    responseStatus: {
+      type: Boolean,
+      required: true,
+    },
+    login: {
+      type: Function as PropType<
+        (arg0: HTMLInputElement | null, arg1: HTMLInputElement | null) => void
+      >,
+      required: true,
+    },
+    isLoading: {
+      type: Boolean,
+      required: true,
+    },
+  },
   setup() {
+    const emailInput = ref<HTMLInputElement | null>(null);
+    const apiInput = ref<HTMLInputElement | null>(null);
+    onMounted(() => {
+      emailInput.value = document.getElementById(
+        "emailInput"
+      ) as HTMLInputElement;
+      apiInput.value = document.getElementById("apiInput") as HTMLInputElement;
+    });
+
     return {
       LoadingIcon,
+      emailInput,
+      apiInput,
     };
   },
-};
+});
 </script>
 
 <style scoped>

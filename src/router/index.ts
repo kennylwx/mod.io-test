@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
 import Browse from "../views/Browse.vue";
-import { ACCESS_TOKEN, getWithExpiry } from "../localStorage.js";
+import { ACCESS_TOKEN, getWithExpiry } from "../localStorage";
 
 const routes = [
   { path: "/", name: "Home", component: Home, meta: { auth: true } },

@@ -16,7 +16,7 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "src/localStorage.js"
+    "src/localStorage.ts"
     // "src/router/index.js"
   ]
 }
