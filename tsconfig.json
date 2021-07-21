@@ -9,14 +9,13 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"]
-    // "noImplicitAny": false
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "src/localStorage.ts"
-    // "src/router/index.js"
+    "src/localStorage.ts",
+    "src/tests/LoginTest.js" // "src/router/index.js"
   ]
 }

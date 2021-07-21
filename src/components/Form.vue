@@ -21,12 +21,18 @@
           name="usernameInput"
           class="form-input"
           type="email"
+          data-test="email-input"
         />
       </div>
 
       <div class="input-container">
         <label class="form-label">API Key</label>
-        <input id="apiInput" name="apiInput" class="form-input" />
+        <input
+          id="apiInput"
+          name="apiInput"
+          class="form-input"
+          data-test="api-input"
+        />
       </div>
       <img
         v-if="isLoading"

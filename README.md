@@ -2,7 +2,7 @@
 
 ## Running the app
 
-`yarn dev` To run in dev mode.
+View the app live here[](https://blissful-montalcini-e1af61.netlify.app/). Alternatively, download and `yarn dev` To run in dev mode.
 
 ## Post Task Reflection
 
