@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Ref } from "vue";
 
 const config = {
   baseURL: "https://api.test.mod.io/v1/",

@@ -11,6 +11,7 @@
       <div
         v-if="responseMsg && !responseStatus"
         class="input-validation iv-failure"
+        data-test="response-msg"
       >
         {{ responseMsg }}
       </div>
@@ -39,6 +40,7 @@
         class="loading"
         :src="LoadingIcon"
         alt="loading-icon"
+        data-test="loading"
       />
 
       <button v-if="!isLoading" class="login-button">Login</button>
