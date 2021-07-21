@@ -41,7 +41,7 @@ export async function loginReq(
     });
 }
 
-const TTL_MIN = 15;
+const TTL_MIN = 60; // Minutes to store the Access Token
 
 export async function verifyReq(
   code: string,
@@ -86,17 +86,14 @@ export async function getGamesReq(accessToken: string) {
   const config = {
     baseURL: "https://api.test.mod.io/v1/",
     headers: {
-      Authorization: `Bearer {${accessToken}}`,
+      Authorization: `Bearer ${accessToken}`,
       Accept: "application/json",
     },
   };
 
-  axios
+  return axios
     .get("me/games", config)
-    .then((response) => {
-      console.log(response);
-      return response;
-    })
+    .then((response) => response.data)
     .catch((err) => {
       console.warn(err);
     });

@@ -1,38 +1,47 @@
 <template>
   <div class="game">
     <div class="g-header">
-      <img class="game-logo" :src="logo" />
+      <img class="game-logo" :src="game.logo.original" />
       <div class="g-info">
-        <h2 class="game-name">{{ gameName }}</h2>
-        <h4 class="game-date">Added on {{ gameDate }}</h4>
+        <h2 class="game-name">{{ game.name }}</h2>
+        <h4 class="game-date">
+          Added on {{ convertStampDate(game.date_added) }}
+        </h4>
       </div>
     </div>
     <div class="g-body">
       <p class="game-stat">
-        Subscribers <span>{{ gameSubscribers }}</span>
+        Subscribers <span>{{ subCount }}</span>
       </p>
       <p class="game-stat">
-        Downloads <span>{{ gameDownloads }}</span>
+        Downloads <span>{{ downCount }}</span>
       </p>
     </div>
   </div>
 </template>
-<script>
-import { defineComponent } from "vue";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import { convertStampDate } from "../util/convertStampDate";
 import logo from "../assets/logo.png";
 
 export default {
   name: "Game",
-  props: [
-    "gameName",
-    "gameDate",
-    "gameLogo",
-    "gameSubscribers",
-    "gameDownloads",
-  ],
-  setup() {
+  props: ["game", "key"],
+  setup(props) {
+    const subCount = ref<number>(0);
+    const downCount = ref<number>(0);
+
+    if (Object.keys(props.game.stats).length !== 0) {
+      subCount.value = props.game.stats.mods_subscribers_total;
+      downCount.value = props.game.stats.mods_downloads_total;
+    }
+
+    console.log(props);
     return {
       logo,
+      convertStampDate,
+      subCount,
+      downCount,
     };
   },
 };

@@ -1,54 +1,45 @@
 <template>
-  <div class="header"><h1>Kenny's App &#9996; Home</h1></div>
+  <div class="header">
+    <h1>Kenny's App &#9996; Home</h1>
+  </div>
   <div class="games-container">
-    <Game
-      gameName="Test Game"
-      gameDate="12 Jun 2019"
-      gameLogo="../assets/logo.png"
-      gameSubscribers="23"
-      gameDownloads="56"
-    />
-
-    <Game
-      gameName="Test Game"
-      gameDate="12 Jun 2019"
-      gameLogo="../assets/logo.png"
-      gameSubscribers="23"
-      gameDownloads="56"
-    />
-
-    <Game
-      gameName="Test Game"
-      gameDate="12 Jun 2019"
-      gameLogo="../assets/logo.png"
-      gameSubscribers="23"
-      gameDownloads="56"
-    />
+    <Game v-for="(game, index) in retrievedGames" :key="index" :game="game" />
   </div>
 </template>
-<script>
-import { ref, onMounted } from "vue";
+<script lang="ts">
+import { onMounted, ref } from "vue";
 import { getGamesReq } from "../requests";
 import { getWithExpiry } from "../localStorage";
 import Game from "../components/Game.vue";
-
-import "../assets/logo.png";
+import GameObject from "../interfaces/game";
 
 export default {
   components: {
     Game,
   },
   setup() {
+    const retrievedGames = ref<Array<GameObject>>([]);
+
     onMounted(async () => {
       const accessToken = getWithExpiry("access_token");
-      console.log("Access Token: " + accessToken);
 
-      // API Call to retrieve Games is not working
-      const response = await getGamesReq(accessToken);
-      console.log("Response: " + response);
+      // API Call to retrieve Games
+      getGamesReq(accessToken).then((res) => {
+        console.log(res.data);
+        res.data.map(({ name, date_added, logo, stats }: GameObject) => {
+          retrievedGames.value.push({
+            name: name,
+            date_added: date_added,
+            logo: logo,
+            stats: stats,
+          });
+        });
+      });
     });
 
-    return {};
+    return {
+      retrievedGames,
+    };
   },
 };
 </script>
@@ -93,7 +84,6 @@ h1 {
   align-items: center;
   justify-content: flex-start;
   height: 60px;
-  /* padding: 0 18px; */
   box-sizing: border-box;
 }
 
