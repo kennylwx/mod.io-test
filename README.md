@@ -10,11 +10,7 @@ Having only less than 2 nights of work time, finishing up this task proved to be
 
 ### Things that needs to be done
 
-1. Cover my edge cases. Treating the server as a blackbox. The test cases, would ideally be **Major**
-   - Stimulating inputing values, and checking to see if the popup works when success, and not when fails.
-   - Check upon putting in security code in popup, the home page is seen, the access token is stored.
-   - Write test cases to verify the game objects are being retrieved onMount.
-   - Validate diffent use cases during Login, and Verify.
+1. I have been having issues with mocking axios calls in my test cases. As my components relied a lot on compositional APIs, I do not know how to stimulate them in a unit test environment, alongside with mocking axios calls. This needs to be further investigated.
 2. Fix Verifiation Security Code Interface. A lot of work can still be done. **Major**
    - Once you paste, the focus goes out of wack, and you can't `backspace` appropriately.
    - After pasting, typing has some issues as well.
@@ -23,7 +19,7 @@ Having only less than 2 nights of work time, finishing up this task proved to be
 
 ### Things that didn't worked so well
 
-1. This is my first time using Compositional API, and it is hard to get your head around, especially when trying to bind data (2 way) between a child and parent, or when updating a parent state from a child, or vice versa. The syntax is uneccesarily hard to figure out, as the resources out there is muddied with different approaches. Not to mention, the added complexity, when both Vue3 and Vue2 approaches are acceptable. This just blurs the "right" approach even further. In comparison, React Hooks is way cleaner.
+1. This is my first time using Compositional API, and it is hard to get your head around, especially when trying to bind data (2 way) between a child and parent, or when updating a parent state from a child, or vice versa. The syntax is uneccesarily hard to figure out, as the resources out there is muddied with different approaches (options API? composition API?). Not to mention, the added complexity, when both Vue3 and Vue2 approaches are acceptable. This just blurs the "right" approach even further. In comparison, React Hooks is way cleaner.
 
 2. vue-router 4 is compatible with Vue 3. Anything below 4, is for Vue 2. Took me a long time to figure that out. For some reason, `yarn add vue-router` comes with vue-router 3.5.
 
